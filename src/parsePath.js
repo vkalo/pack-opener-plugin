@@ -2,7 +2,7 @@ const eResolve = require("enhanced-resolve"); // 路径解析工具
 const { readFileSync, existsSync, statSync } = require('fs');
 const { resolve } = require('path');
 const { currDirRegExp, jsSuffixRegExp, modulePathReg } = require('./constants/reg');
-const { inlet, moduleList, chartName } = require('./init');
+const { inlet, moduleList, moduleName } = require('./init');
 const { setModule } = require('./utils');
 
 function realPath(requirePath, filePath) {
@@ -46,7 +46,7 @@ function getModulePath(path) {
     return pathMap[path];
   }
   if (!path.includes('/node_modules/')) {
-    pathMap[path] = path.replace(inlet, `${chartName}`);
+    pathMap[path] = path.replace(inlet, `${moduleName}`);
   } else {
     const [rootPath, name] = path.match(modulePathReg);
     if (!moduleList[name]) {

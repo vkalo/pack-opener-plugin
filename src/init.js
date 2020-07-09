@@ -10,8 +10,7 @@ const chartInfo = {
   allFiles: {}, //所有文件原始信息
   moduleList: {}, //模块文件
   othersList: {}, //非模文件
-  chartName: null,
-  moduleName:null,
+  moduleName: null,
   errors: {}, // 错误池
 
   outlet: '',
@@ -20,7 +19,7 @@ const chartInfo = {
 }
 
 function init({ entryPath, extra }) {
-  console.log('初始化图表信息')
+  console.log('初始化模块信息')
   existsFiles(entryPath, ...extra);
   const inlet = dirname(entryPath);
   const packageText = readFileSync(join(inlet, 'package.json'), 'utf-8');
@@ -29,16 +28,12 @@ function init({ entryPath, extra }) {
   const { moduleName, modulePath } = setModule(name, version);
   const rootReg = new RegExp(`^${inlet}/(?!node_modules/)`);
 
-  chartInfo.outfiles[moduleName + '/package.json'] = packageText;
-  // chartInfo.packageJson = packageJson;
   chartInfo.moduleName = moduleName;
-  chartInfo.chartName = moduleName;
   chartInfo.entryPath = entryPath;
   chartInfo.inlet = inlet;
   chartInfo.moduleList = {
     [moduleName]: { name, version, entryPath, rootReg, moduleName, modulePath, needUpdate: true },
   };
-  console.log('完成初始化图表信息')
 }
 
 

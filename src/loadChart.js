@@ -1,11 +1,10 @@
-const { allFiles, moduleList, othersList, outfiles, errors, chartName } = require('./init');
+const { allFiles, moduleList, othersList, outfiles, errors } = require('./init');
 const { transLateFiles } = require('./transcoding');
 const { packCode,warn} = require('./utils');
 const { modulePathReg } = require('./constants/reg');
 const { getModulePath } = require('./parsePath');
 
 function loadChart(entryPath) {
-  console.log('开始读取图表')
   const fileList = [entryPath];
 
   //  输出所有依赖文件
@@ -30,7 +29,6 @@ function loadChart(entryPath) {
     console.log('读取失败');
     return false;
   } else {
-    // console.log('读取完成');
     return true;
   }
 }
@@ -39,7 +37,6 @@ function modularization() {
   if (Object.keys(errors).length > 0) {
     return;
   }
-  console.log('模块化');
   //提取模块
   Object.values(moduleList).forEach((item) => {
     if (item.needUpdate || !outfiles[item.modulePath]) {
@@ -69,7 +66,6 @@ function modularization() {
       outfiles[modulePath] = text;
     }
   });
-  console.log('模块化完成')
 }
 
 function pickModule({ entryPath, rootReg, modulePath }) {

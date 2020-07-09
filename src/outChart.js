@@ -5,7 +5,6 @@ const options = { toplevel: true };
 
 function exportModule() {
   return Object.entries(outfiles).reduce((out, [path, text]) => {
-    console.log(path);
     if (path.endsWith('.js')) {
       // out[path] = uglifyjs.minify(text, options).code;
       out[path] = text;
