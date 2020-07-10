@@ -1,6 +1,6 @@
 
 const { allFiles, othersList, moduleList, moduleName, outfiles, errors } = require('./init');
-const { loadChart, modularization } = require('./loadChart');
+const { loadChart, modularization } = require('./loadModule');
 const { getModulePath } = require('./parsePath');
 
 /**

@@ -18,13 +18,10 @@ const chartInfo = {
   init,
 }
 
-function init({ entryPath, extra }) {
-  console.log('初始化模块信息')
+function init({ entryPath, extra, name, version }) {
+  console.log('初始化模块信息');
   existsFiles(entryPath, ...extra);
   const inlet = dirname(entryPath);
-  const packageText = readFileSync(join(inlet, 'package.json'), 'utf-8');
-  const packageJson = JSON.parse(packageText);
-  const { name, version } = packageJson;
   const { moduleName, modulePath } = setModule(name, version);
   const rootReg = new RegExp(`^${inlet}/(?!node_modules/)`);
 

@@ -1,18 +1,21 @@
 const chartInfo = require('./src/init');
-const { join } = require('path');
-function init({ entryPath, extra, hotCallback = [] }) {
-  chartInfo.init({ entryPath, extra });
+
+function init({ entryPath, extra, name, version, hotCallback = [] }) {
+  chartInfo.init({ entryPath, extra, name, version });
   hotCallback = Array.isArray(hotCallback) ? hotCallback : [hotCallback];
-  const { loadChart, modularization } = require('./src/loadChart');
-  const exportModule = require('./src/outChart');
+  const { loadChart, modularization } = require('./src/loadModule');
+  const exportModule = require('./src/outModule');
   const watch = require('./src/watch');
   const { outfiles, errors, inlet, moduleName } = chartInfo;
-  if (!loadChart(chartInfo.entryPath) || !loadChart(join(inlet, 'package.json')) || !loadChart(join(inlet, 'poster.png'))) {
+  const loadFiles = [chartInfo.entryPath, ...extra];
+
+  if (!loadFiles.reduce((res, path) => loadChart(path) && res, true)) {
     throw new Error('初始化失败');
   }
+
   modularization();
   watch(inlet, hotCallback);
-  console.log('完成了模块化');
+  console.log('完成了模块化,模块数' + Object.keys(outfiles).length);
   return { outfiles, errors, inlet, moduleName, exportModule, hotCallback };
 }
 

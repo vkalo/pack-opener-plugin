@@ -6,7 +6,6 @@ const { getModulePath } = require('./parsePath');
 
 function loadChart(entryPath) {
   const fileList = [entryPath];
-
   //  输出所有依赖文件
   while (fileList.length > 0) {
     const filesPath = fileList.shift();
