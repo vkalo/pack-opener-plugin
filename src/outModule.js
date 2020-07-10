@@ -20,8 +20,6 @@ function exportModule() {
 
   return Object.entries(outfiles).reduce((out, [path, text]) => {
     if (path.endsWith('.js')) {
-      let text = null;
-
       if (path in nodeModuleList) {
         const cacheName = nodeModuleList[path].moduleName + '.js';
         if (moduleCache.includes(cacheName)) {
@@ -33,7 +31,6 @@ function exportModule() {
       } else {
         text = uglifyjs.minify(text, options).code;
       }
-
       out[path] = text;
     } else {
       out[path] = text;
