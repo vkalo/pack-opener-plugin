@@ -33,9 +33,9 @@ function fromRelativePath(requirePath, filePath) {
 
 function fromModulePath(requirePath) {
   try {
-    return eResolve.sync(inlet, requirePath).replace(jsSuffixRegExp, '') + '.js';
-  } catch (err) {
     return eResolve.sync(__dirname, requirePath).replace(jsSuffixRegExp, '') + '.js';
+  } catch (err) {
+    return eResolve.sync(inlet, requirePath).replace(jsSuffixRegExp, '') + '.js';
   }
 }
 
