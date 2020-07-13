@@ -1,4 +1,6 @@
-const { existsSync } = require('fs');
+const { existsSync,writeFileSync } = require('fs');
+const mkdirp = require('mkdirp');
+const {dirname} = require('path');
 
 /**
  * 配置模块
@@ -73,6 +75,18 @@ var styles = {
   'yellowBG': ['\x1B[43m', '\x1B[49m']
 }
 
+
+/**
+ * 输出文件
+ * @param {string} path 
+ * @param {string} text 
+ */
+function outFile(path, text) {
+  mkdirp.sync(dirname(path));
+  writeFileSync(path, text, "utf-8");
+}
+
+
 function warn(message) {
   const key = 'red'
   console.log(styles[key][0] + '%s' + styles[key][1], message)
@@ -82,4 +96,5 @@ module.exports = {
   packCode,
   existsFiles,
   warn,
+  outFile,
 }

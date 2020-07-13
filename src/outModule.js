@@ -3,7 +3,8 @@ const { outfiles, moduleList, moduleName } = require('./init');
 const uglifyjs = require("uglify-es");
 const options = { toplevel: true };
 const { join } = require('path');
-const { readdirSync, readFileSync, writeFileSync,mkdirSync,existsSync } = require('fs');
+const { readdirSync, readFileSync, mkdirSync, existsSync } = require('fs');
+const {outFile} = require('./utils')
 
 const moduleCachePath = join(__dirname, '../moduleCache');
 if (!existsSync(moduleCachePath)) {
@@ -19,6 +20,7 @@ function exportModule() {
   const moduleCache = readdirSync(moduleCachePath);
 
   return Object.entries(outfiles).reduce((out, [path, text]) => {
+
     if (path.endsWith('.js')) {
       if (path in nodeModuleList) {
         const cacheName = nodeModuleList[path].moduleName + '.js';
@@ -26,7 +28,7 @@ function exportModule() {
           text = readFileSync(join(moduleCachePath, cacheName))
         } else {
           text = uglifyjs.minify(text, options).code;
-          writeFileSync(join(moduleCachePath, cacheName), text);
+          outFile(join(moduleCachePath, cacheName), text);
         }
       } else {
         text = uglifyjs.minify(text, options).code;
