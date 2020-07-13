@@ -1,6 +1,6 @@
 {
   "name": "pack-opener-plugin",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "pack-opener packaging tools",
   "main": "index.js",
   "scripts": {
@@ -16,17 +16,18 @@
     "pack-opener"
   ],
   "dependencies": {
+    "@babel/cli": "^7.5.5",
+    "@babel/core": "^7.5.5",
+    "@babel/plugin-syntax-class-properties": "^7.10.4",
+    "@babel/plugin-transform-strict-mode": "^7.2.0",
     "@babel/polyfill": "^7.8.7",
+    "@babel/preset-env": "^7.5.5",
     "babel": "^6.23.0",
     "core-js": "^3.6.5",
     "enhanced-resolve": "^4.1.1",
     "mkdirp": "^1.0.4",
     "uglify-es": "^3.3.9",
-    "watch": "^1.0.2",
-    "@babel/cli": "^7.5.5",
-    "@babel/core": "^7.5.5",
-    "@babel/plugin-transform-strict-mode": "^7.2.0",
-    "@babel/preset-env": "^7.5.5"
+    "watch": "^1.0.2"
   },
   "author": "kalo",
   "license": "ISC",
