@@ -1,8 +1,7 @@
 const { allFiles, moduleList, othersList, outfiles, errors } = require('./init');
 const { transLateFiles } = require('./transcoding');
 const { packCode,warn} = require('./utils');
-const { modulePathReg } = require('./constants/reg');
-const { getModulePath } = require('./parsePath');
+const { getModulePath,parseModulePath } = require('./parsePath');
 
 function loadChart(entryPath) {
   const fileList = [entryPath];
@@ -109,7 +108,7 @@ function mergeDependencies(depends) {
     if (filePath in othersList || filePath.endsWith('.json')) {
       res[getModulePath(filePath)] = true;
     } else {
-      const name = filePath.match(modulePathReg)[1];
+      const {name} = parseModulePath(filePath);
       const { modulePath } = moduleList[name];
       res[modulePath] = true;
     }

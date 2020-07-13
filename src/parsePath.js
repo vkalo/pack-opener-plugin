@@ -1,7 +1,7 @@
 const eResolve = require("enhanced-resolve"); // 路径解析工具
 const { readFileSync, existsSync, statSync } = require('fs');
 const { resolve } = require('path');
-const { currDirRegExp, jsSuffixRegExp, modulePathReg } = require('./constants/reg');
+const { currDirRegExp, jsSuffixRegExp, node_modulesReg } = require('./constants/reg');
 const { inlet, moduleList, moduleName } = require('./init');
 const { setModule } = require('./utils');
 
@@ -32,23 +32,25 @@ function fromRelativePath(requirePath, filePath) {
 }
 
 function fromModulePath(requirePath) {
+  let path = null;
   try {
-    return eResolve.sync(__dirname, requirePath).replace(jsSuffixRegExp, '') + '.js';
+    path = eResolve.sync(__dirname, requirePath);
   } catch (err) {
-    return eResolve.sync(inlet, requirePath).replace(jsSuffixRegExp, '') + '.js';
+    path = eResolve.sync(inlet, requirePath);
   }
+  return path;
 }
 
 
-const pathMap={};
+const pathMap = {};
 function getModulePath(path) {
-  if(pathMap[path]){
+  if (pathMap[path]) {
     return pathMap[path];
   }
   if (!path.includes('/node_modules/')) {
     pathMap[path] = path.replace(inlet, `${moduleName}`);
   } else {
-    const [rootPath, name] = path.match(modulePathReg);
+    const {rootPath,name}=parseModulePath(path);
     if (!moduleList[name]) {
       const { version } = JSON.parse(readFileSync(resolve(rootPath, './package.json')));
       const { moduleName, modulePath } = setModule(name, version);
@@ -56,12 +58,21 @@ function getModulePath(path) {
       const rootReg = new RegExp(`^${rootPath}`);
       moduleList[name] = { name, version, entryPath, rootReg, moduleName, modulePath };
     }
-    pathMap[path] = path.replace(modulePathReg, name + '@' + moduleList[name].version);
+    pathMap[path] = path.replace(rootPath, name + '@' + moduleList[name].version);
   }
   return pathMap[path];
+}
+
+function parseModulePath(path){
+  const [node_modules] = path.match(node_modulesReg);
+  const pathArr = path.replace(node_modules, '').split('/');
+  const name = pathArr[0].startsWith('@') ? pathArr[0] + '/' + pathArr[1] : pathArr[0];
+  const rootPath = node_modules + name;
+  return {rootPath,name}
 }
 
 module.exports = {
   realPath,
   getModulePath,
+  parseModulePath,
 }

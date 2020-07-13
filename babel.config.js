@@ -13,5 +13,5 @@ const presets = [
     },
   ],
 ];
-const plugins = [["@babel/plugin-transform-modules-commonjs", "@babel/plugin-syntax-class-properties", { "strictMode": false }]];
+const plugins = [["@babel/plugin-transform-modules-commonjs", { "strictMode": false }], ["@babel/plugin-proposal-class-properties",{ "loose": true }]];
 module.exports = { presets, plugins, "compact": false };
