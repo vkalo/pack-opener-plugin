@@ -1,6 +1,6 @@
 const { allFiles, moduleList, othersList, outfiles, errors } = require('./init');
 const { transLateFiles } = require('./transcoding');
-const { packCode,warn} = require('./utils');
+const { packCode,warn,dealJsFile} = require('./utils');
 const { getModulePath,parseModulePath } = require('./parsePath');
 
 function loadChart(entryPath) {
@@ -49,9 +49,9 @@ function modularization() {
     if (item.needUpdate || !outfiles[modulePath]) {
       const { [modulePath]: entryFile, ...other } = contain;
       const text = packCode(modulePath, mergeDependencies(depends), entryFile);
-      outfiles[modulePath] = Object.entries(other).reduce((res, [modulePath, text]) => {
+      outfiles[modulePath] = dealJsFile(Object.entries(other).reduce((res, [modulePath, text]) => {
         return packCode(modulePath, text) + res;
-      }, text)
+      }, text));
     }
   });
 
@@ -59,7 +59,7 @@ function modularization() {
   Object.values(othersList).forEach(({ modulePath, text, imports }) => {
     if (!outfiles[modulePath]) {
       if (modulePath.endsWith('.js')) {
-        text = packCode(modulePath, mergeDependencies(imports), text);
+        text = dealJsFile(packCode(modulePath, mergeDependencies(imports), text));
       }
       outfiles[modulePath] = text;
     }

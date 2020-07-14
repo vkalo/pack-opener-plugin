@@ -29,7 +29,9 @@ function packCode(id, dependent, text) {
   });`;
 };
 
-
+function dealJsFile(text){
+  return `(function(){var define=null;var require=null;${text}})();`;
+}
 /**
  * 查看文件是否存在
  * @param  {...any} files 
@@ -97,4 +99,5 @@ module.exports = {
   existsFiles,
   warn,
   outFile,
+  dealJsFile,
 }
