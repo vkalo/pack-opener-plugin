@@ -37,8 +37,8 @@ function dealJsFile(text){
  * @param  {...any} files 
  */
 function existsFiles(...files) {
-  const flag = true;
-  const err = '';
+  let flag = true;
+  let err = '';
   files.forEach((path) => {
     if (!existsSync(path)) {
       flag = false;
