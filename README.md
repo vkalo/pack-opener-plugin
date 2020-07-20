@@ -1,7 +1,7 @@
 # pack-opener-plugin
 
 ## 简介
-pack-opener-plugin用于将js代码打包成浏览器能识别的模块，能够识别打包js,css,png,json等文件，打包将生成`模块@版本`的格式方便复用。
+pack-opener-plugin用于将js代码打包成浏览器能识别的模块，通过入口文件，解析依赖树，将代码打包，能够识别打包js,css,png,json等文件，打包将生成`模块@版本`的格式方便复用。每一个模块独立成包（npmpackge模块或入口文件形成的模块），不在模块入口文件依赖树内的文件将独立成包（部分npm模块会出现这种情况）,因此打包后的文件数量会>=包的数量。
 
 ## 安装
 `npm install pack-opener-plugin`
@@ -31,4 +31,4 @@ const {
 ```
 
 ## 其他
-本项目的无需resourceMap等依赖文件，所有代码依赖关系由都包含在代码自身,加载配合pack-opener使用。
+本项目无需resourceMap等依赖文件，所有代码依赖关系由都包含在代码自身,加载配合pack-opener使用。
